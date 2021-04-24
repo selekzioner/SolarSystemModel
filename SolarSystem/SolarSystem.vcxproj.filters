@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>qrc;rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{9b2557a6-f608-479e-bbca-9822455cbacb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{d1fe5970-28f3-4a63-9cfe-2458ba4984f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Loaders">
+      <UniqueIdentifier>{e430cce8-dcfb-4285-ae84-fbbf65019b3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SolarSystem">
+      <UniqueIdentifier>{7ef5b535-05ed-463f-b593-67fb52bae544}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="MainWindow.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
+    <QtUic Include="MainWindow.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="MainWidget.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="MainWindow.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureLoader.cpp">
+      <Filter>Resource Loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshLoader.cpp">
+      <Filter>Resource Loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SolarSystemObjectFactory.cpp">
+      <Filter>SolarSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SolarSystemObject.cpp">
+      <Filter>SolarSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="SolarSystemCameraAdapter.cpp">
+      <Filter>SolarSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="SolarSystem.cpp">
+      <Filter>SolarSystem</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Mesh.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertex.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshLoader.h">
+      <Filter>Resource Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureLoader.h">
+      <Filter>Resource Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SolarSystemObjectFactory.h">
+      <Filter>SolarSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SolarSystemObject.h">
+      <Filter>SolarSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="SolarSystemCameraAdapter.h">
+      <Filter>SolarSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="SolarSystem.h">
+      <Filter>SolarSystem</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="MainWindow.h">
+      <Filter>UI</Filter>
+    </QtMoc>
+    <QtMoc Include="MainWidget.h">
+      <Filter>UI</Filter>
+    </QtMoc>
+  </ItemGroup>
+</Project>
