@@ -12,15 +12,15 @@ namespace SolarSystemModel {
 		void Update();
 
 		void Rotate(const QVector2D& dir);
-		void SetMagnification(unsigned magnification);
+		void Magnify(int dir);
 		
 		const Camera& GetCamera() const;
 	private:
 		Camera _camera;
 		SolarSystem& _solarSystem;
 		SolarSystemObjectPtr _connectedObj;
-		unsigned _magnification = 7;
-		float _cameraVelocity = 0.01f;
+		unsigned _magnification = 15;
+		float _cameraVelocity = 0.05f;
 		float _anglePhi = 0.f, _angleThetta = 0.f;
 	};
 }

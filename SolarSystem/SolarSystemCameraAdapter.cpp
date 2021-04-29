@@ -1,3 +1,5 @@
+#define _USE_MATH_DEFINES
+
 #include "SolarSystemCameraAdapter.h"
 
 using namespace SolarSystemModel;
@@ -11,24 +13,15 @@ void SolarSystemCameraAdapter::ConnectWithObject(const std::string& name)
 {
 	_connectedObj = _solarSystem.GetObj(name);
 	if (_connectedObj) {
-		_camera.up = {0.f, 1.f, 0.f};
-		_magnification = 7;
-	}
-	else {
-		_camera.pos = { 0.f,  100.f,  0.f };
-		_camera.front = { 0.f, -1.f, 0.f };
-		_camera.up = { 0.f, 0.f, 1.f };
+		_camera.up = { 0.f, 1.f, 0.f };
+		_magnification = 15;
 	}
 }
 
 void SolarSystemCameraAdapter::Update()
 {
 	if (_connectedObj) {
-		/*auto newPos = _connectedObj->GetPos();
-		newPos.setZ(newPos.z() - _magnification * _connectedObj->GetParams().radius);
-		_camera.pos = newPos;
-		_camera.front =  - newPos + _connectedObj->GetPos();*/
-		const auto radius = _magnification * _connectedObj->GetParams().radius;
+		const auto radius = static_cast<float>(_magnification) * _connectedObj->GetParams().radius;
 		_camera.pos.setX(_connectedObj->GetPos().x() + radius * cos (_angleThetta) * sin(_anglePhi));
 		_camera.pos.setY(_connectedObj->GetPos().y() + radius * sin(_angleThetta));
 		_camera.pos.setZ(_connectedObj->GetPos().z() + radius * cos(_angleThetta) * cos(_anglePhi));
@@ -40,29 +33,22 @@ void SolarSystemCameraAdapter::Rotate(const QVector2D& dir)
 {
 	const auto normDir = dir.normalized();
 	if (_connectedObj) {
-		const auto radius = _camera.pos.distanceToPoint(_connectedObj->GetPos());
 		_anglePhi += _cameraVelocity * normDir.x();
 		_angleThetta += _cameraVelocity * normDir.y();
 
-		_anglePhi = _anglePhi < 360.f - _cameraVelocity / 2 ? _anglePhi : 0.f;
-		_angleThetta = _angleThetta < 360.f - _cameraVelocity / 2 ? _angleThetta : 0.f;
-		//_angle += _cameraAngleVelocity;
-		//_angle = _angle < 360.f - _cameraAngleVelocity / 2 ? _angle : 0.f;
-		/*_camera.pos.setX(normDir.x() * radius * cos(_angle));
-		_camera.pos.setY(normDir.y() * radius * sin(_angle));
-		_camera.pos.setZ(normDir.z() * radius * sin(_angle));*/
-		//_camera.front = _connectedObj->GetPos() - _camera.pos;
+		_anglePhi = _anglePhi < 2 * static_cast<float>(M_PI) - _cameraVelocity / 2 ? _anglePhi : 0.f;
+		if (std::abs(_angleThetta) > static_cast<float>(M_PI) / 2 - _cameraVelocity / 2)
+			_angleThetta -= _cameraVelocity * normDir.y();
 	}
-	else {
-		_camera.pos.setX(_camera.pos.x() + normDir.x() * _cameraVelocity);
-		_camera.pos.setY(_camera.pos.y() + normDir.y() * _cameraVelocity);
-	}
-	
 }
 
-void SolarSystemCameraAdapter::SetMagnification(const unsigned magnification)
+void SolarSystemCameraAdapter::Magnify(const int dir)
 {
-	_magnification = magnification;
+	const auto normDir = dir / std::abs(dir);
+	const auto newMagn = _magnification + normDir;
+	
+	if (newMagn > 5 && newMagn < 100)
+		_magnification = newMagn;
 }
 
 const Camera& SolarSystemCameraAdapter::GetCamera() const

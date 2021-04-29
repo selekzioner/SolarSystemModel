@@ -14,7 +14,7 @@ void Object::Initialize()
 	}
 	_mesh.Initialize();
 
-	_mesh.textures.resize(2);
+	_mesh.textures.resize(1);
 	TextureLoader::Load(std::string("Textures/" + _name + ".jpg"), _mesh.textures[0]);
 }
 

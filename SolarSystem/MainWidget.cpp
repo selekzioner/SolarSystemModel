@@ -2,14 +2,11 @@
 
 #include "MainWidget.h"
 
+using namespace SolarSystemModel;
+
 MainWidget::MainWidget(QWidget* parent)
 : QOpenGLWidget(parent), _cameraAdapter(_solarSystem)
 {
-}
-
-void MainWidget::Disconnect()
-{
-  _cameraAdapter.ConnectWithObject("");
 }
 
 void MainWidget::ConnectWithSun()
@@ -57,10 +54,23 @@ void MainWidget::ConnectWithNeptune()
 	_cameraAdapter.ConnectWithObject("Neptune");
 }
 
+void MainWidget::ResetMode()
+{
+	_mode = _mode == SolarSystemMode::Real ? SolarSystemMode::Demonstrative : SolarSystemMode::Real;
+	_solarSystem.Reset(_mode);
+	_cameraAdapter.ConnectWithObject("Sun");
+}
+
+void MainWidget::Boost(const int factor)
+{
+	_solarSystem.Boost(static_cast<float>(factor) / 50.f);
+}
+
 void MainWidget::initializeGL()
 {
+	setFocusPolicy(Qt::StrongFocus);
   _solarSystem.Initialize();
-  setFocusPolicy(Qt::StrongFocus);
+	_cameraAdapter.ConnectWithObject("Sun");
 }
 
 void MainWidget::paintGL()
@@ -70,43 +80,29 @@ void MainWidget::paintGL()
   update();
 }
 
-/*void MainWidget::keyPressEvent(QKeyEvent* event)
+void MainWidget::keyPressEvent(QKeyEvent* event)
 {
-  const auto angle = 5.f;
-  const auto front = _camera.front;
-  const auto dir = _camera.front.z() / std::abs(_camera.front.z());
-
-  QMatrix4x4 rotation;
   switch (event->key()) {
 	  case Qt::Key_A:
-	    rotation.rotate(angle, 0.f, 1.f, 0.f);
+			_cameraAdapter.Rotate({ -1, 0 });
 	    break;
 	  case Qt::Key_D:
-	    rotation.rotate(-angle, 0.f, 1.f, 0.f);
+			_cameraAdapter.Rotate({ 1, 0 });
 	    break;
 	  case Qt::Key_W:
-	    rotation.rotate(-angle * dir, 1.f, 0.f, 0.f);
+			_cameraAdapter.Rotate({ 0, 1 });
 	    break;
 	  case Qt::Key_S:
-	    rotation.rotate(angle * dir, 1.f, 0.f, 0.f);
+			_cameraAdapter.Rotate({ 0, -1 });
 	    break;
-	  default:
-	    return;
   }
-  _camera.front = rotation * front;
 }
 
 void MainWidget::wheelEvent(QWheelEvent* event)
 {
-  auto dr = 0.f;
-  const auto offset = 1.f;
-  if (event->angleDelta().y() > 0) {
-    dr = offset * _camera.front.z() / abs(_camera.front.z());
-  }
-  else if (event->angleDelta().y() < 0) {
-    dr = -offset * _camera.front.z() / abs(_camera.front.z());
-  }
-  _camera.pos = { _camera.pos.x() + dr * _camera.front.x(),
-                  _camera.pos.y() + dr * _camera.front.y(),
-                  _camera.pos.z() + dr * _camera.front.z() };
-}*/
+  if (event->angleDelta().y() > 0)
+		_cameraAdapter.Magnify(1);
+	
+  else if (event->angleDelta().y() < 0)
+		_cameraAdapter.Magnify(-1);
+}

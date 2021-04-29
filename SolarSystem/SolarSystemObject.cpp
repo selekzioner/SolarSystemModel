@@ -11,6 +11,13 @@ SolarSystemObject::SolarSystemObject(std::string&& name, const SolarSystemObject
 {
 }
 
+void SolarSystemObject::SetBoostFactor(const float factor)
+{
+	const auto newFrame = _boostFactor * static_cast<float>(_frame) / factor;
+	_boostFactor = factor;
+	_frame = static_cast<unsigned>(newFrame);
+}
+
 SolarSystemObjectParameters SolarSystemObject::GetParams() const
 {
 	return _params;
@@ -67,16 +74,43 @@ bool SolarSystemObject::InitMesh()
 void SolarSystemObject::Update()
 {
 	_modelMatrix.setToIdentity();
-	
+	const auto orbitAngleVelocity =_params.orbitAngleVelocity * _boostFactor;
+	const auto angleVelocity =_params.angleVelocity * _boostFactor;
+
 	_pos.setX(_params.orbitRadius
-		* cos(_params.orbitAngleVelocity * static_cast<float>(_frame)));
+		* cos(orbitAngleVelocity * static_cast<float>(_frame)));
 	_pos.setZ(_params.orbitRadius
-		* sin(_params.orbitAngleVelocity * static_cast<float>(_frame)));
+		* sin(orbitAngleVelocity * static_cast<float>(_frame)));
 	_modelMatrix.translate(_pos);
-	
-	_modelMatrix.rotate(_params.angleVelocity
+
+	_modelMatrix.rotate(angleVelocity
 		* static_cast<float>(_frame), 0.f, 1.f, 0.f);
 	_modelMatrix.rotate(-90.f, 1, 0, 0);
-	
+
+	++_frame;
+}
+
+SolarSystemDependentObject::SolarSystemDependentObject(std::string&& name,
+	const SolarSystemObjectParameters& params, const SolarSystemObject& connectedObj)
+: SolarSystemObject(std::move(name), params), _connectedObj(connectedObj)
+{
+}
+
+void SolarSystemDependentObject::Update()
+{
+	_modelMatrix.setToIdentity();
+	const auto orbitAngleVelocity = _params.orbitAngleVelocity * _boostFactor;
+	const auto angleVelocity = _params.angleVelocity * _boostFactor;
+
+	_pos.setX(_connectedObj.GetPos().x() + _params.orbitRadius
+		* cos(orbitAngleVelocity * static_cast<float>(_frame)));
+	_pos.setZ(_connectedObj.GetPos().z() + _params.orbitRadius
+		* sin(orbitAngleVelocity * static_cast<float>(_frame)));
+	_modelMatrix.translate(_pos);
+
+	_modelMatrix.rotate(angleVelocity
+		* static_cast<float>(_frame), 0.f, 1.f, 0.f);
+	_modelMatrix.rotate(-90.f, 1, 0, 0);
+
 	++_frame;
 }

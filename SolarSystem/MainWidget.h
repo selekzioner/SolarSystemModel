@@ -2,7 +2,6 @@
 
 #include <QOpenGLWidget>
 
-#include "Camera.h"
 #include "SolarSystem.h"
 #include "SolarSystemCameraAdapter.h"
 
@@ -13,7 +12,6 @@ public:
   explicit MainWidget(QWidget* parent = nullptr);
 
 public slots:
-  void Disconnect();
   void ConnectWithSun();
   void ConnectWithMercury();
   void ConnectWithVenus();
@@ -24,16 +22,19 @@ public slots:
   void ConnectWithUranus();
   void ConnectWithNeptune();
 
+  void ResetMode();
+  void Boost(int factor);
+
 protected:
   void initializeGL() override;
   void paintGL() override;
 
-  //void keyPressEvent(QKeyEvent* event) override;
-  //void wheelEvent(QWheelEvent* event) override;
+  void keyPressEvent(QKeyEvent* event) override;
+  void wheelEvent(QWheelEvent* event) override;
 
 private:
   SolarSystemModel::SolarSystem _solarSystem;
-  //Camera _camera;
   SolarSystemModel::SolarSystemCameraAdapter _cameraAdapter;
+  SolarSystemModel::SolarSystemMode _mode = SolarSystemModel::SolarSystemMode::Real;
 };
 

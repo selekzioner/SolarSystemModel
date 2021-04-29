@@ -7,6 +7,8 @@ Mesh::Mesh()
 
 Mesh::~Mesh()
 {
+  glEnable(GL_CLEAR);
+  glClear(GL_DEPTH_BUFFER_BIT);
   _vertexBuf.destroy();
   _indexBuf.destroy();
 }
@@ -14,9 +16,12 @@ Mesh::~Mesh()
 void Mesh::Initialize()
 {
   initializeOpenGLFunctions();
-
-  glEnable(GL_CULL_FACE);
+	
+  /*glEnable(GL_CLEAR);
+  glClear(GL_DEPTH_BUFFER_BIT);
+	
   glEnable(GL_DEPTH_TEST);
+  glDepthFunc(GL_LESS);*/
 	
   _vertexBuf.create();
 	_indexBuf.create();
