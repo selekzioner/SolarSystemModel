@@ -10,18 +10,21 @@ public:
 	explicit Object(std::string&& name);
 	virtual ~Object() = default;
 	
-	void Initialize();
-	void Render(QOpenGLShaderProgram& program);
+	virtual void Initialize();
+	virtual void Render(QOpenGLShaderProgram& program);
+
+	void SetPos(const QVector3D& pos);
 
 	QMatrix4x4 GetModelMatrix() const;
 	QVector3D GetPos() const;
 
 	std::string Name() const;
 
+	virtual void Update() = 0;
+
 protected:
 	virtual bool InitMesh();
-	virtual void Update() = 0;
-	
+
 	Mesh _mesh;
 	std::string _name;
 

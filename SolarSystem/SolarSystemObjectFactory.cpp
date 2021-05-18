@@ -2,7 +2,7 @@
 
 using namespace SolarSystemModel;
 
-const static std::map<std::string, SolarSystemObjectParameters> rParameters{
+const static std::map<std::string, SolarSystemObjectParameters> rParameters {
 	{"Sun", {6.96f, 0.f, 0.0103f, 0.f}},
 	{"Mercury", {0.024f, 57.9f, 0.0045f, 0.07139f}},
 	{"Venus", {0.061f, 108.2f, -0.0011f, 0.02796f}},
@@ -12,10 +12,11 @@ const static std::map<std::string, SolarSystemObjectParameters> rParameters{
 	{"Jupiter", {0.715f, 778.6f, 0.6347f, 0.00145f}},
 	{"Saturn", {0.603f, 1433.5f, 0.5872f, 0.00058f}},
 	{"Uranus", {0.256f, 2872.5f, -0.3653f, 0.00021f}},
-	{"Neptune", {0.248f, 4495.1f, 0.3903f, 0.00011f}}
+	{"Neptune", {0.248f, 4495.1f, 0.3903f, 0.00011f}},
+	{"SaturnRings", {0.06f, 0.8f, 0.f, 0.0056f}}
 };
 
-const static std::map<std::string, SolarSystemObjectParameters> dParameters{
+const static std::map<std::string, SolarSystemObjectParameters> dParameters {
 	{"Sun", {	1.f, 0.f, 0.0103f, 0.f}},
 	{"Mercury", {0.3f, 2.f, 0.0045f, 0.07139f}},
 	{"Venus", {0.6f, 4.f, -0.0011f, 0.02796f}},
@@ -25,7 +26,8 @@ const static std::map<std::string, SolarSystemObjectParameters> dParameters{
 	{"Jupiter", {0.9f, 12.f, 0.6347f, 0.145f}},
 	{"Saturn", {0.85f, 14.f, 0.5872f, 0.058f}},
 	{"Uranus", {0.8f, 16.f, -0.3653f, 0.021f}},
-	{"Neptune", {0.87f, 18.f, 0.3903f, 0.011f}}
+	{"Neptune", {0.87f, 18.f, 0.3903f, 0.011f}},
+	{"SaturnRings", {0.06f, 0.8f, 0.f, 0.0056f}}
 };
 
 SolarSystemObjectPtr SolarSystemObjectFactory::Create(std::string&& name)
@@ -44,4 +46,13 @@ SolarSystemObjectPtr SolarSystemDependentObjectFactory::Create(std::string&& nam
 		return nullptr;
 	}
 	return std::make_shared<SolarSystemDependentObject>(std::move(name), parameters.at(name), connectedObj);
+}
+
+SolarSystemObjectPtr SaturnRingsFactory::Create(std::string&& name, const SolarSystemObject& connectedObj)
+{
+	const auto& parameters = mode == SolarSystemMode::Real ? rParameters : dParameters;
+	if (parameters.find(name) == parameters.end()) {
+		return nullptr;
+	}
+	return std::make_shared<SaturnRings>(std::move(name), parameters.at(name), connectedObj);
 }

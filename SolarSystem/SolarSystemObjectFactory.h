@@ -12,7 +12,12 @@ namespace SolarSystemModel {
 		static inline SolarSystemMode mode;
 	};
 
-	class SolarSystemDependentObjectFactory : public SolarSystemObjectFactory {
+	class SolarSystemDependentObjectFactory final : public SolarSystemObjectFactory {
+	public:
+		static SolarSystemObjectPtr Create(std::string&& name, const SolarSystemObject& connectedObj);
+	};
+
+	class SaturnRingsFactory final : public SolarSystemObjectFactory {
 	public:
 		static SolarSystemObjectPtr Create(std::string&& name, const SolarSystemObject& connectedObj);
 	};

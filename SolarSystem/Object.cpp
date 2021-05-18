@@ -24,6 +24,12 @@ void Object::Render(QOpenGLShaderProgram& program)
 	_mesh.Render(program);
 }
 
+void Object::SetPos(const QVector3D& pos)
+{
+	_pos = pos;
+}
+
+
 QMatrix4x4 Object::GetModelMatrix() const
 {
 	return _modelMatrix;

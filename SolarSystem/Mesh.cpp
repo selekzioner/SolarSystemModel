@@ -7,21 +7,13 @@ Mesh::Mesh()
 
 Mesh::~Mesh()
 {
-  glEnable(GL_CLEAR);
-  glClear(GL_DEPTH_BUFFER_BIT);
   _vertexBuf.destroy();
   _indexBuf.destroy();
 }
 
 void Mesh::Initialize()
 {
-  initializeOpenGLFunctions();
-	
-  /*glEnable(GL_CLEAR);
-  glClear(GL_DEPTH_BUFFER_BIT);
-	
-  glEnable(GL_DEPTH_TEST);
-  glDepthFunc(GL_LESS);*/
+  _openGlFunctions.initializeOpenGLFunctions();
 	
   _vertexBuf.create();
 	_indexBuf.create();
@@ -36,6 +28,8 @@ void Mesh::Render(QOpenGLShaderProgram& program)
 {
   _vertexBuf.bind();
   _indexBuf.bind();
+
+  _openGlFunctions.glEnable(GL_DEPTH_TEST);
 	
   program.enableAttributeArray("posAttr");
   program.setAttributeBuffer("posAttr", GL_FLOAT, 0, 3, sizeof(Vertex));
@@ -45,10 +39,12 @@ void Mesh::Render(QOpenGLShaderProgram& program)
 
   if (textures[0]) {
     program.setUniformValue("Texture", 0);
-    glActiveTexture(GL_TEXTURE0);
+    _openGlFunctions.glActiveTexture(GL_TEXTURE0);
     textures[0]->bind();
   }
 
-  glPolygonMode(GL_FRONT, GL_FILL);
-  glDrawElements(GL_TRIANGLES, _indexBuf.size(), GL_UNSIGNED_INT, nullptr);
+  _openGlFunctions.glPolygonMode(GL_FRONT, GL_FILL);
+  _openGlFunctions.glDrawElements(GL_TRIANGLES, _indexBuf.size(), GL_UNSIGNED_INT, nullptr);
+
+  _openGlFunctions.glDisable(GL_DEPTH_TEST);
 }

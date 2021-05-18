@@ -16,16 +16,16 @@ namespace SolarSystemModel {
 
 		void SetBoostFactor(float factor);
 		SolarSystemObjectParameters GetParams() const;
-
+		
+		void Update() override;
 	protected:
 		bool InitMesh() override;
-		void Update() override;
 		
 		SolarSystemObjectParameters _params;
 		float _boostFactor = 1.f;
 	};
 
-	class SolarSystemDependentObject : public SolarSystemObject {
+	class SolarSystemDependentObject final : public SolarSystemObject {
 	public:
 		SolarSystemDependentObject(std::string&& name,
 			const SolarSystemObjectParameters& params, const SolarSystemObject& connectedObj);
@@ -35,11 +35,19 @@ namespace SolarSystemModel {
 		const SolarSystemObject& _connectedObj;
 	};
 
-	class Rings final : public SolarSystemDependentObject {
+	class SaturnRings final :public SolarSystemObject {
 	public:
-		Rings(std::string&& name,
+		SaturnRings(std::string&& name,
 			const SolarSystemObjectParameters& params, const SolarSystemObject& connectedObj);
+		void Initialize() override;
+		void Render(QOpenGLShaderProgram& program) override;
+
 	private:
-		bool InitMesh() override;
+		void Update() override;
+		
+		std::vector<SolarSystemObjectPtr> _rings;
+		unsigned _number = 1;
+		
+		const SolarSystemObject& _saturn;
 	};
 }

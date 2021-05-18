@@ -7,9 +7,6 @@ void SolarSystem::Initialize()
   _shader.addShaderFromSourceFile(QOpenGLShader::Vertex, "Shaders/object.vsh");
   _shader.addShaderFromSourceFile(QOpenGLShader::Fragment, "Shaders/object.fsh");
   _shader.link();
-
-  _openGlFunctions.initializeOpenGLFunctions();
-  _openGlFunctions.glEnable(GL_DEPTH_TEST);
 	
   Reset();
 }
@@ -41,6 +38,7 @@ void SolarSystem::Reset(const SolarSystemMode mode)
   _objects.push_back(SolarSystemObjectFactory::Create("Mars"));
   _objects.push_back(SolarSystemObjectFactory::Create("Jupiter"));
   _objects.push_back(SolarSystemObjectFactory::Create("Saturn"));
+  _objects.push_back(SaturnRingsFactory::Create("SaturnRings", *_objects.back()));
   _objects.push_back(SolarSystemObjectFactory::Create("Uranus"));
   _objects.push_back(SolarSystemObjectFactory::Create("Neptune"));
 

@@ -114,3 +114,39 @@ void SolarSystemDependentObject::Update()
 
 	++_frame;
 }
+
+SaturnRings::SaturnRings(std::string&& name, const SolarSystemObjectParameters& params, const SolarSystemObject& connectedObj)
+: SolarSystemObject(std::move(name), params), _saturn(connectedObj)
+{
+}
+
+void SaturnRings::Initialize()
+{
+	for (auto i = 0u; i < _number; ++i) {
+		_rings.push_back(std::make_shared<SolarSystemDependentObject>("SaturnRing", _params, _saturn));
+	}
+	
+	for (auto& ring : _rings) {
+		ring->Initialize();
+		// TODO: Set Pos
+		for (auto i = 0u; _rings[i] != ring; ++i) {
+			for (auto j = 0; j < 100; ++j) {
+				_rings[i]->Update();
+			}
+		}
+	}
+}
+
+void SaturnRings::Render(QOpenGLShaderProgram& program)
+{
+	for (auto& ring : _rings) {
+		ring->Render(program);
+	}
+}
+
+void SaturnRings::Update()
+{
+	for (auto& ring : _rings) {
+		ring->Update();
+	}
+}

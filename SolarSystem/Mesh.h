@@ -10,7 +10,7 @@
 class Mesh;
 using MeshPtr = std::unique_ptr<Mesh>;
 
-class Mesh final : protected QOpenGLFunctions_3_0 {
+class Mesh final {
 public:
 	Mesh();
 	~Mesh();
@@ -24,4 +24,5 @@ public:
 
 private:
 	QOpenGLBuffer _vertexBuf, _indexBuf;
+	QOpenGLFunctions_3_0 _openGlFunctions;
 };
