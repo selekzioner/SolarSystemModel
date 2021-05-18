@@ -11,7 +11,7 @@ public:
 	virtual ~Object() = default;
 	
 	virtual void Initialize();
-	virtual void Render(QOpenGLShaderProgram& program);
+	virtual void Render(QOpenGLShaderProgram& program, const QMatrix4x4& view, const QMatrix4x4& proj);
 
 	void SetPos(const QVector3D& pos);
 

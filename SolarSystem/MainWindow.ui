@@ -270,7 +270,7 @@
      <enum>Qt::NoFocus</enum>
     </property>
     <property name="text">
-     <string>Demonstrative Model</string>
+     <string>Change Mode</string>
     </property>
    </widget>
   </widget>
@@ -504,6 +504,22 @@
     <hint type="destinationlabel">
      <x>695</x>
      <y>454</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ModeButton</sender>
+   <signal>clicked()</signal>
+   <receiver>Sun</receiver>
+   <slot>toggle()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1584</x>
+     <y>419</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1420</x>
+     <y>99</y>
     </hint>
    </hints>
   </connection>

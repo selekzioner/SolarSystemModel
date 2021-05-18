@@ -17,10 +17,7 @@ void SolarSystem::Render(const Camera& camera)
   projection.perspective(30.f, 1.7f, 0.1f, 100000.0f);
 
   for (auto& obj : _objects) {
-    const auto matrix = projection * camera.GetViewMatrix() * obj->GetModelMatrix();
-    _shader.setUniformValue("MVPmatrix", matrix);
-
-    obj->Render(_shader);
+    obj->Render(_shader, camera.GetViewMatrix(), projection);
   }
 }
 

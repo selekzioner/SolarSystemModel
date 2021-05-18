@@ -18,10 +18,13 @@ void Object::Initialize()
 	TextureLoader::Load(std::string("Textures/" + _name + ".jpg"), _mesh.textures[0]);
 }
 
-void Object::Render(QOpenGLShaderProgram& program)
+void Object::Render(QOpenGLShaderProgram& program, const QMatrix4x4& view, const QMatrix4x4& proj)
 {
-	Update();
+	
+	const auto matrix = proj * view * _modelMatrix;
+	program.setUniformValue("MVPmatrix", matrix);
 	_mesh.Render(program);
+	Update();
 }
 
 void Object::SetPos(const QVector3D& pos)

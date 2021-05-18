@@ -1,6 +1,7 @@
 #define _USE_MATH_DEFINES
 
 #include <cmath>
+#include <future>
 
 #include "SolarSystemObject.h"
 
@@ -25,8 +26,8 @@ SolarSystemObjectParameters SolarSystemObject::GetParams() const
 
 bool SolarSystemObject::InitMesh()
 {
-	const auto lats = 100;
-	const auto longs = 100;
+	const auto lats = 50;
+	const auto longs = 50;
 	
 	const auto latStep = 2 * static_cast<float>(M_PI) / lats;
 	const auto longStep = static_cast<float>(M_PI) / longs;
@@ -123,24 +124,54 @@ SaturnRings::SaturnRings(std::string&& name, const SolarSystemObjectParameters& 
 void SaturnRings::Initialize()
 {
 	for (auto i = 0u; i < _number; ++i) {
+		const auto randomNumber = 1 + std::rand() % 1;
+		_params.orbitRadius = _params.orbitRadius * (1.f + 0.001f * randomNumber);
+		_params.orbitAngleVelocity = _params.orbitAngleVelocity * (1.f + 0.001f * randomNumber);
 		_rings.push_back(std::make_shared<SolarSystemDependentObject>("SaturnRing", _params, _saturn));
+		_rings.back()->Initialize();
 	}
+
+	std::vector<std::future<void>> threads;
+	const size_t threadCount = 5;
+	const auto n = static_cast<double>(_rings.size() / threadCount);
 	
-	for (auto& ring : _rings) {
-		ring->Initialize();
-		// TODO: Set Pos
-		for (auto i = 0u; _rings[i] != ring; ++i) {
-			for (auto j = 0; j < 100; ++j) {
-				_rings[i]->Update();
-			}
-		}
+	for (size_t j = 0; j < threadCount; ++j) {
+		auto begin = static_cast<size_t>(j * n);
+		auto end = static_cast<size_t>((j + 1) * n);
+		
+		threads.push_back(std::async(InitRing, std::ref(_rings), std::ref(_params), begin, end));
+	}
+	for (auto& thread : threads) {
+		thread.get();
 	}
 }
 
-void SaturnRings::Render(QOpenGLShaderProgram& program)
+void SaturnRings::Render(QOpenGLShaderProgram& program, const QMatrix4x4& view, const QMatrix4x4& proj)
 {
 	for (auto& ring : _rings) {
-		ring->Render(program);
+		ring->Render(program, view, proj);
+	}
+}
+
+void SaturnRings::SetBoostFactor(const float factor)
+{
+	for (auto& ring : _rings) {
+		ring->SetBoostFactor(factor);
+	}
+}
+
+void SaturnRings::InitRing(std::vector<SolarSystemObjectPtr>& rings,
+	SolarSystemObjectParameters& params, const size_t beginIdx, const size_t endIdx)
+{
+	for (auto j = beginIdx; j < endIdx; ++j) {
+		for (auto i = 0u; rings[i] != rings[j]; ++i) {
+			const auto randNum = 1 + std::rand()
+				% static_cast<int>(2 * M_PI * params.orbitRadius / params.orbitAngleVelocity);
+
+			for (auto j = 0; j < randNum; ++j) {
+				rings[i]->Update();
+			}
+		}
 	}
 }
 
