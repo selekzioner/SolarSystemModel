@@ -46,6 +46,7 @@ void SolarSystem::Reset(const SolarSystemMode mode)
 
 void SolarSystem::Boost(const float factor)
 {
+  boostFactor = factor;
   for (auto& obj : _objects) {
     obj->SetBoostFactor(factor);
   }

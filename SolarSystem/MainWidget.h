@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QLabel>
 #include <QOpenGLWidget>
 
 #include "SolarSystem.h"
@@ -25,6 +26,12 @@ public slots:
   void ResetMode();
   void Boost(int factor);
 
+  void SetDemonstrativeView();
+  void SetTopView();
+
+signals:
+  void SendTimeData(const QString& data);
+
 protected:
   void initializeGL() override;
   void paintGL() override;
@@ -36,5 +43,7 @@ private:
   SolarSystemModel::SolarSystem _solarSystem;
   SolarSystemModel::SolarSystemCameraAdapter _cameraAdapter;
   SolarSystemModel::SolarSystemMode _mode = SolarSystemModel::SolarSystemMode::Real;
+
+  QLabel _timeLabel;
 };
 

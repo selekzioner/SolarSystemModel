@@ -69,6 +69,8 @@ bool SolarSystemObject::InitMesh()
 			}
 		}
 	}
+
+	_frame = rand() % 1000;
 	return true;
 }
 
@@ -88,7 +90,8 @@ void SolarSystemObject::Update()
 		* static_cast<float>(_frame), 0.f, 1.f, 0.f);
 	_modelMatrix.rotate(-90.f, 1, 0, 0);
 
-	++_frame;
+	if (!_isStoped)
+		++_frame;
 }
 
 SolarSystemDependentObject::SolarSystemDependentObject(std::string&& name,
@@ -113,7 +116,8 @@ void SolarSystemDependentObject::Update()
 		* static_cast<float>(_frame), 0.f, 1.f, 0.f);
 	_modelMatrix.rotate(-90.f, 1, 0, 0);
 
-	++_frame;
+	if (!_isStoped)
+		++_frame;
 }
 
 SaturnRings::SaturnRings(std::string&& name, const SolarSystemObjectParameters& params, const SolarSystemObject& connectedObj)

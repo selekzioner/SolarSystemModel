@@ -23,6 +23,7 @@ namespace SolarSystemModel {
 		
 		SolarSystemObjectParameters _params;
 		float _boostFactor = 1.f;
+		bool _isStoped = false;
 	};
 
 	class SolarSystemDependentObject final : public SolarSystemObject {

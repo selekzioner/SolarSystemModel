@@ -55,3 +55,17 @@ const Camera& SolarSystemCameraAdapter::GetCamera() const
 {
 	return _camera;
 }
+
+void SolarSystemCameraAdapter::SetDemonstrativeView()
+{
+	_connectedObj = _solarSystem.GetObj("Sun");
+	_angleThetta = M_PI / 6;
+	_magnification = 55;
+}
+
+void SolarSystemCameraAdapter::SetTopView()
+{
+	_connectedObj = _solarSystem.GetObj("Sun");
+	_angleThetta = M_PI / 2 - _cameraVelocity / 2;
+	_magnification = 75;
+}

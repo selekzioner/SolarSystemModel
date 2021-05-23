@@ -16,6 +16,8 @@ namespace SolarSystemModel {
 		void Boost(float factor);
 
 		SolarSystemObjectPtr GetObj(const std::string& name) const;
+
+		float boostFactor = 1.f;
 	
 	private:
 		QOpenGLShaderProgram _shader;

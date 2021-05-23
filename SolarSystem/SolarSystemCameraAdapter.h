@@ -13,6 +13,9 @@ namespace SolarSystemModel {
 
 		void Rotate(const QVector2D& dir);
 		void Magnify(int dir);
+
+		void SetDemonstrativeView();
+		void SetTopView();
 		
 		const Camera& GetCamera() const;
 	private:
